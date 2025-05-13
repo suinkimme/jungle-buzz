@@ -65,3 +65,26 @@
   font-size: 40px;
   opacity: 0.4;
 }
+
+/* primary-button */
+.primary-button {
+  height: 38px;
+  color: #bbb;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 21px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.primary-button:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+.primary-button:active {
+  background-color: #333;
+}
