@@ -129,3 +129,137 @@
   right: 30px;
   top: 30px;
 }
+
+/* popup */
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  backdrop-filter: blur(7px);
+  transition: all 0.3s;
+}
+
+.popup-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 430px;
+  min-height: 300px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 55px;
+  transition: all 0.3s;
+}
+
+.popup-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-top: 25px;
+  margin-bottom: 58px;
+}
+
+.popup-title-container h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000;
+}
+
+.popup-title-container p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666;
+}
+
+.text-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.close-button {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* base-input */
+.base-input {
+  width: 100%;
+  height: 48px;
+  background-color: #eee;
+  border-radius: 6px;
+  padding: 0 16px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  border: none;
+  outline: none;
+}
+
+.base-input::placeholder {
+  color: #bfbfbf;
+}
+
+/* long-button */
+.long-button {
+  width: 100%;
+  height: 48px;
+  background-color: #000;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.long-button:disabled {
+  color: #a0a0a0;
+  background-color: #d7d7d7;
+  cursor: not-allowed;
+}
+
+/* text-button */
+.text-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-button {
+  font-size: 14px;
+  font-weight: 500;
+  color: #999;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 28px;
+}
+
+.register-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.register-helper-text {
+  font-size: 12px;
+  font-weight: 400;
+  color: #000;
+}
