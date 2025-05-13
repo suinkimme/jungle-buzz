@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
@@ -20,19 +20,27 @@
   <body class="text-regular">
     <button class="primary-button">로그인</button>
 
-    <div class="text-slot-list">
-      <p class="text-slot-item">오늘은 정말 아무것도 하기 싫은 날이다.</p>
-      <p class="text-slot-item">왜 세상은 항상 이렇게 돌아가는 걸까?</p>
-      <p class="text-slot-item">
-        지하철에서 누가 내 발을 밟고도 사과를 안 했어.
-      </p>
+    <div class="container">
+      <div class="text-slot-list">
+        <p class="text-slot-item">오늘은 정말 아무것도 하기 싫은 날이다.</p>
+        <p class="text-slot-item">왜 세상은 항상 이렇게 돌아가는 걸까?</p>
+        <p class="text-slot-item">
+          지하철에서 누가 내 발을 밟고도 사과를 안 했어.
+        </p>
+      </div>
+
+      <div class="text-container">
+        <span class="infinite-text"></span>
+        <div></div>
+      </div>
     </div>
 
-    <!-- jQuery and Bootstrap Bundle -->
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>
 </html>

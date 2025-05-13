@@ -39,6 +39,15 @@
   font-style: normal;
 }
 
+/* container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+}
+
 /* index.html */
 /* slot-chat */
 .text-slot-list {
@@ -87,4 +96,16 @@
 
 .primary-button:active {
   background-color: #333;
+}
+
+/* text-container */
+.infinite-text {
+  font-weight: 800;
+  color: #e8e8e8;
+  font-size: 40px;
+}
+
+.typed-cursor {
+  color: #000;
+  font-size: 40px;
 }
