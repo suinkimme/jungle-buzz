@@ -40,10 +40,16 @@ $(document).ready(function () {
   $(".close-button").on("click", function () {
     closePopup();
   });
+
+  $(".popup-backdrop").on("click", function (e) {
+    if (e.target === this) {
+      closePopup();
+    }
+  });
 });
 
 // 한글의 특성상 focus 이후에 조합되는 문자를 유추할 수 없다. 현재로써는
-$(document).on("click keydown", function (e) {
+$(".container").on("click keydown", function (e) {
   const $input = $(".text-input").first();
 
   if (!$input.is(":focus")) {
