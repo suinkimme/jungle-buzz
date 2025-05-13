@@ -272,3 +272,33 @@
   font-weight: 400;
   color: #000;
 }
+
+/* my-info-container */
+.my-info-container {
+  width: 100%;
+  height: 106px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  margin-top: 30px;
+}
+
+.my-info-wrapper {
+  width: 650px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+
+.misc {
+  line-height: 38px;
+  height: 38px;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
