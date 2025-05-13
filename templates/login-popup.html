@@ -1,0 +1,34 @@
+<!-- 로그인 팝업 -->
+<div class="popup-backdrop" style="display: none">
+  <div class="popup-container">
+    <button class="close-button">
+      <img src="{{ url_for('static', filename='images/close.png') }}" />
+    </button>
+
+    <div class="popup-title-container">
+      <h1>짹짹!</h1>
+      <p>지금 외치고, 바로 털어버리세요.</p>
+    </div>
+
+    <form>
+      <div class="text-input-container">
+        <input
+          type="text"
+          class="base-input login-email"
+          placeholder="이메일"
+        />
+        <input
+          type="password"
+          class="base-input login-password"
+          placeholder="비밀번호"
+        />
+      </div>
+
+      <button class="long-button">로그인</button>
+    </form>
+
+    <div class="text-button-container">
+      <button class="text-button">회원가입, 생각보다 금방 끝나요.</button>
+    </div>
+  </div>
+</div>

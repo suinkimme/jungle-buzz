@@ -34,7 +34,11 @@ app.json = CustomJSONProvider(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('main.html')
+
+@app.route('/mypage')
+def mypage():
+    return render_template('mypage.html')
 
 
 if __name__ == '__main__':
