@@ -52,28 +52,34 @@
 /* index.html */
 /* slot-chat */
 .text-slot-list {
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+.text-slot-item-container {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 20px;
 }
 
 .text-slot-item {
+  line-height: 100px;
+  height: 100px;
   font-size: 32px;
   opacity: 0.2;
   color: #000;
   text-align: center;
 }
 
-.text-slot-item:nth-child(2) {
+.text-slot-item.active {
   font-size: 64px;
   font-weight: 700;
   opacity: 1;
 }
 
-.text-slot-item:nth-child(1),
-.text-slot-item:nth-child(3) {
+.text-slot-item.yet-active {
   font-size: 40px;
   opacity: 0.4;
 }
