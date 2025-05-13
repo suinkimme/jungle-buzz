@@ -1,8 +1,19 @@
-const isFocusedTextInput = () => {
+function isFocusedTextInput() {
   return $(".text-input").is(":focus");
-};
+}
 
-$(document).ready(() => {
+// 팝업 열기
+function openPopup(popupName) {
+  $(".popup-backdrop").hide();
+  $(`.popup-backdrop[data-popup="${popupName}"]`).show();
+}
+
+// 팝업 닫기
+function closePopup() {
+  $(".popup-backdrop").hide();
+}
+
+$(document).ready(function () {
   // 사용자의 타이핑을 유도하는 타이핑 효과
   const typed = new Typed(".text-input", {
     strings: [
@@ -22,8 +33,12 @@ $(document).ready(() => {
     loop: true,
   });
 
-  $(".text-input").on("focus", () => {
+  $(".text-input").on("focus", function () {
     typed.reset();
+  });
+
+  $(".close-button").on("click", function () {
+    closePopup();
   });
 });
 
