@@ -121,3 +121,11 @@
 .text-input::placeholder {
   color: #e8e8e8;
 }
+
+/* auth-button-container */
+.auth-button-container {
+  display: flex;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
