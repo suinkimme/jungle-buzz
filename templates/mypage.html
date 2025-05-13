@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="auth-button-container">
+  <button class="primary-button" onClick="window.location.href='/'">
+    뒤로가기
+  </button>
+  <div class="auth-button-container-right">
+    <button class="primary-button">내 버즈</button>
+    <button class="primary-button">로그아웃</button>
+  </div>
+</div>
+
+<div class="my-info-container">
+  <div class="my-info-wrapper">
+    <div class="misc">김민규</div>
+    <div class="misc">dev@suinkim.me</div>
+    <div class="misc">2025년 5월 가입함</div>
+  </div>
+</div>
+
+<div class="my-buzz-container">
+  <div class="my-buzz-list">
+    {% for i in range(99) %}
+    <div class="my-buzz-item">
+      <span>2025년 5월 13일 오전 09:00</span>
+      <p>포인터 진짜 왜 있는 거냐</p>
+    </div>
+    {% endfor %}
+    <div style="height: 100px"></div>
+  </div>
+</div>
+
+{% endblock content %}

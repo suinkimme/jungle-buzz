@@ -1,0 +1,41 @@
+<!-- 회원가입 팝업 -->
+<div class="popup-backdrop" style="display: none" data-popup="register">
+  <div class="popup-container">
+    <button class="close-button">
+      <img src="{{ url_for('static', filename='images/close.png') }}" />
+    </button>
+
+    <form>
+      <div class="text-input-container">
+        <input type="text" class="base-input login-email" placeholder="이름" />
+        <div class="register-input-container">
+          <input
+            type="text"
+            class="base-input login-email"
+            placeholder="이메일"
+          />
+          <span class="register-helper-text">이메일을 입력해 주세요.</span>
+        </div>
+        <input
+          type="password"
+          class="base-input login-password"
+          placeholder="비밀번호"
+        />
+        <div class="register-input-container">
+          <input
+            type="password"
+            class="base-input login-password"
+            placeholder="비밀번호 확인"
+          />
+          <span class="register-helper-text"
+            >영문, 숫자 조합이면 더 안전해요.</span
+          >
+        </div>
+      </div>
+
+      <button class="long-button" style="margin-top: 28px" disabled>
+        회원가입
+      </button>
+    </form>
+  </div>
+</div>

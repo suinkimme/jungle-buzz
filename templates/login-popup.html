@@ -1,28 +1,36 @@
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 로그인 팝업 -->
+<div class="popup-backdrop" style="display: none" data-popup="login">
+  <div class="popup-container">
+    <button class="close-button">
+      <img src="{{ url_for('static', filename='images/close.png') }}" />
+    </button>
 
-    <!-- Font CSS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/common.css') }}"
-    />
-    <title>정글버즈</title>
-  </head>
-  <body>
-    <!-- jQuery and Bootstrap Bundle -->
-    <script
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
+    <div class="popup-title-container">
+      <h1>짹짹!</h1>
+      <p>지금 외치고, 바로 털어버리세요.</p>
+    </div>
+
+    <form>
+      <div class="text-input-container">
+        <input
+          type="text"
+          class="base-input login-email"
+          placeholder="이메일"
+        />
+        <input
+          type="password"
+          class="base-input login-password"
+          placeholder="비밀번호"
+        />
+      </div>
+
+      <button class="long-button">로그인</button>
+    </form>
+
+    <div class="text-button-container">
+      <button class="text-button" onclick="openPopup('register')">
+        회원가입, 생각보다 금방 끝나요.
+      </button>
+    </div>
+  </div>
+</div>
