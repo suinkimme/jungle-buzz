@@ -84,34 +84,34 @@ $(document).ready(function () {
       closePopup();
     }
   });
-});
 
-var swiper = new Swiper(".swiper", {
-  direction: "vertical",
-  slidesPerView: "auto",
-  spaceBetween: 0,
-  loop: false,
-  allowTouchMove: false,
-  autoHeight: true,
-});
+  var swiper = new Swiper(".swiper", {
+    direction: "vertical",
+    slidesPerView: "auto",
+    spaceBetween: 0,
+    loop: false,
+    allowTouchMove: false,
+    autoHeight: true,
+  });
 
-$(".text-input").on("keyup", function (e) {
-  if (e.key === "Enter") {
-    const inputText = $(this).val().trim();
-    if (inputText.length === 0) return;
+  $(".text-input").on("keyup", function (e) {
+    if (e.key === "Enter") {
+      const inputText = $(this).val().trim();
+      if (inputText.length === 0) return;
 
-    const newSlide = `<div class="text-slot-item swiper-slide">${inputText}</div>`;
-    swiper.appendSlide(newSlide);
-    swiper.slideNext();
+      const newSlide = `<div class="text-slot-item swiper-slide">${inputText}</div>`;
+      swiper.appendSlide(newSlide);
+      swiper.slideNext();
 
-    $(this).val("");
+      $(this).val("");
 
-    const maxSlides = 10;
-    // 슬라이드 넘버 유지: removeSlide는 slideNext 애니메이션 끝나고 호출
-    swiper.once("transitionEnd", function () {
-      if (swiper.slides.length > maxSlides) {
-        swiper.removeSlide(0);
-      }
-    });
-  }
+      const maxSlides = 10;
+      // 슬라이드 넘버 유지: removeSlide는 slideNext 애니메이션 끝나고 호출
+      swiper.once("transitionEnd", function () {
+        if (swiper.slides.length > maxSlides) {
+          swiper.removeSlide(0);
+        }
+      });
+    }
+  });
 });
