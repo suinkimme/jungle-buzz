@@ -17,9 +17,64 @@
 <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 
 <script>
-  let swiper; // 전역 선언
   const tokenRaw = localStorage.getItem("token");
   const token = tokenRaw ? JSON.parse(tokenRaw) : null;
+
+  const swiper = new Swiper(".swiper", {
+    direction: "vertical",
+    slidesPerView: "auto",
+    loop: false,
+    allowTouchMove: false,
+    autoHeight: true,
+  });
+
+  // WebSocket 연결
+  const socket = io("http://52.79.240.79:5002");
+  // const socket = io("http://127.0.0.1:5002");
+
+  socket.on("connect", () => {
+    console.log("[SocketIO] 연결됨");
+    socket.emit("join_main", {});
+
+    window.addEventListener("beforeunload", function (event) {
+      console.log("beforeunload 이벤트 발생됨");
+      if (socket && socket.connected) {
+        socket.emit("leave_main", {});
+        socket.disconnect(); // 웹소켓 연결 해제
+      }
+    });
+
+    request
+      .get("/api/recent-chats")
+      .then(function (response) {
+        response.chats.forEach((chat) => {
+          const newSlide = `<div class="text-slot-item swiper-slide">${chat.content}</div>`;
+          swiper.appendSlide(newSlide);
+        });
+
+        swiper.slideTo(swiper.slides.length - 1); // 최신 슬라이드로 이동
+      })
+      .catch(function (error) {
+        console.log("채팅 불러오기 실패", error);
+      });
+  });
+
+  socket.on("system", (data) => {
+    console.log("[System]", data.msg);
+  });
+
+  // 채팅 메시지 수신 시 표시
+  socket.on("new_chat", (data) => {
+    const newSlide = `<div class="text-slot-item swiper-slide">${data.content}</div>`;
+    swiper.appendSlide(newSlide);
+    swiper.slideNext();
+
+    if (swiper.slides.length > 10) {
+      swiper.once("transitionEnd", () => {
+        swiper.removeSlide(0);
+      });
+    }
+  });
 
   $(document).ready(function () {
     // 타이핑 효과
@@ -49,62 +104,6 @@
       typed.start();
     });
 
-    // Swiper 초기화
-    swiper = new Swiper(".swiper", {
-      direction: "vertical",
-      slidesPerView: "auto",
-      loop: false,
-      allowTouchMove: false,
-      autoHeight: true,
-    });
-
-    // WebSocket 연결
-    const socket = io("http://127.0.0.1:5002");
-
-    socket.on("connect", () => {
-      console.log("[SocketIO] 연결됨");
-      socket.emit("join_main", {});
-
-      window.addEventListener("beforeunload", function (event) {
-        console.log("beforeunload 이벤트 발생됨");
-        if (socket && socket.connected) {
-          socket.emit("leave_main", {});
-          socket.disconnect(); // 웹소켓 연결 해제
-        }
-      });
-
-      request
-        .get("/api/recent-chats")
-        .then(function (response) {
-          response.chats.forEach((chat) => {
-            const newSlide = `<div class="text-slot-item swiper-slide">${chat.content}</div>`;
-            swiper.appendSlide(newSlide);
-          });
-
-          // swiper.slideTo(swiper.slides.length - 1); // 최신 슬라이드로 이동
-        })
-        .catch(function (error) {
-          console.log("채팅 불러오기 실패", error);
-        });
-    });
-
-    socket.on("system", (data) => {
-      console.log("[System]", data.msg);
-    });
-
-    // 채팅 메시지 수신 시 표시
-    socket.on("new_chat", (data) => {
-      const newSlide = `<div class="text-slot-item swiper-slide">${data.content}</div>`;
-      swiper.appendSlide(newSlide);
-      swiper.slideNext();
-
-      if (swiper.slides.length > 10) {
-        swiper.once("transitionEnd", () => {
-          swiper.removeSlide(0);
-        });
-      }
-    });
-
     // 메시지 전송
     $(".text-input").on("keyup", function (e) {
       if (e.key === "Enter") {
@@ -113,6 +112,10 @@
 
         if (!token) {
           openPopup("login");
+          return;
+        }
+
+        if (!fetchSendChat()) {
           return;
         }
 

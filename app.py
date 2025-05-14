@@ -20,7 +20,8 @@ app = Flask(__name__)
 CORS(app)
 
 # MongoDB 연결
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb://jmlee:jmlee@127.0.0.1', 27017)
+# client = MongoClient('localhost', 27017)
 db = client['your_db_name']
 article_col = db['article']
 chat_col = db['chat']
@@ -120,7 +121,6 @@ def analyze_chat():
         'timestamp': datetime.utcnow(),
         'content': response.choices[0].message.content
     })
-    
 
 # 채팅 분석 스케줄러
 schedule.every().day.at("09:50").do(analyze_chat)
@@ -332,8 +332,12 @@ def send_chat(user):
 @app.route('/')
 def index():
     # 가장 최근 분석 결과 가져오기
-    analysis_logs = list(analysis_col.find().sort('timestamp', -1).limit(1))[0]
-    content = ast.literal_eval(f"'''{analysis_logs['content']}'''")
+    analysis_logs = list(analysis_col.find().sort('timestamp', -1).limit(1))
+    if analysis_logs:
+        analysis_logs = analysis_logs[0]
+        content = ast.literal_eval(f"'''{analysis_logs['content']}'''")
+    else:
+        content = '버즈가 하나도 없어요. ✨ 아마 모두 오늘은 걱정 없이 행복하게 보내고 있나 봐요! :)'
     return render_template('main.html', current_path=request.path, analysis_logs=content)
 
 @app.route('/mypage')
@@ -362,4 +366,4 @@ if __name__ == '__main__':
     t.daemon = True
     t.start()
 
-    app.run('0.0.0.0', port=5001, debug=True)
+    app.run('0.0.0.0', port=5000, debug=True)

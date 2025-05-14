@@ -8,7 +8,7 @@ app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 connected_users = {}
-
+ 
 @socketio.on("connect")
 def handle_connect():
     print(f"[Connected] SID: {request.sid}")
@@ -31,6 +31,7 @@ def handle_leave_main(data):
 
 @socketio.on("send_chat")
 def handle_send_chat(data):
+    print(f"[DEBUG] {request.sid} send chat")
     token = data.get("token")
     content = data.get("content", "").strip()
 
