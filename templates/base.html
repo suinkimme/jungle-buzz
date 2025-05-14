@@ -24,8 +24,6 @@
     <title>303호 1팀 정글버즈</title>
   </head>
   <body class="text-regular">
-    {% block content %} {% endblock content %}
-
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -33,5 +31,6 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    {% block content %} {% endblock content %}
   </body>
 </html>

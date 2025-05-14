@@ -183,7 +183,7 @@ def get_chat_logs(user):
     skip = (page - 1) * page_size
 
     #MongoDB에서 해당 사용자 채팅 로그 조회 (최신순) /timestamp는 반드시 datetime 객체로 저장되어 있어야 정렬이 정확
-    logs_cursor = cheat_col.find(
+    logs_cursor = chat_col.find(
         {'username': user}
     ).sort('timestamp', -1).skip(skip).limit(page_size)
 
@@ -196,7 +196,7 @@ def get_chat_logs(user):
         })
 
     #다음 페이지 존재 여부 판단
-    total_count = cheat_col.count_documents({'username': user})
+    total_count = chat_col.count_documents({'username': user})
     has_more = total_count > skip + page_size
 
     #결과 반환

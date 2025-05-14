@@ -31,6 +31,11 @@ function createClient() {
         url: endpoint,
         method,
         contentType: "application/json",
+        headers: tokenStorage.get()
+          ? {
+              Authorization: `Bearer ${tokenStorage.get()}`,
+            }
+          : {},
         data:
           method === "GET" || method === "DELETE" ? data : JSON.stringify(data),
         success(response) {

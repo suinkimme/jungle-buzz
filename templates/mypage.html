@@ -1,23 +1,79 @@
 {% extends "base.html" %} {% block content %} {% include "buttons.html" %}
 
+<script>
+  const token = localStorage.getItem("token");
+  if (!token) {
+    window.location.href = "/";
+  }
+</script>
+
 <div class="my-info-container">
   <div class="my-info-wrapper">
-    <div class="misc">김민규</div>
-    <div class="misc">dev@suinkim.me</div>
-    <div class="misc">2025년 5월 가입함</div>
+    <div class="misc name">-</div>
+    <div class="misc email">-</div>
+    <div class="misc create-date">-</div>
   </div>
 </div>
 
 <div class="my-buzz-container">
-  <div class="my-buzz-list">
-    {% for i in range(99) %}
-    <div class="my-buzz-item">
-      <span>2025년 5월 13일 오전 09:00</span>
-      <p>포인터 진짜 왜 있는 거냐</p>
-    </div>
-    {% endfor %}
-    <div style="height: 100px"></div>
-  </div>
+  <div class="my-buzz-list"></div>
 </div>
+
+<div style="height: 200px"></div>
+
+<script>
+  let page = 1;
+
+  function fetchChatLogs() {
+    request
+      .get(endpoints.chatLogs, { page })
+      .then(function (response) {
+        console.log(page);
+        const logs = response.logs;
+        logs.forEach(function (log) {
+          $(".my-buzz-list").append(
+            `<div class="my-buzz-item">
+            <span>${log.timestamp}</span>
+            <p>${log.content}</p>
+          </div>`
+          );
+        });
+
+        page++;
+      })
+      .catch(function (error) {
+        window.location.href = "/";
+      });
+  }
+
+  function fetchProfile() {
+    request
+      .get(endpoints.profile)
+      .then(function (response) {
+        $(".misc.name").text(response.profile.name);
+        $(".misc.email").text(response.profile.email);
+        $(".misc.create-date").text(
+          `${response.profile.create_year}년 ${response.profile.create_month}월 가입함`
+        );
+      })
+      .catch(function (error) {
+        window.location.href = "/";
+      });
+  }
+
+  $(document).ready(function () {
+    fetchProfile();
+    fetchChatLogs();
+
+    $(window).on("scroll", function () {
+      if (
+        $(document).scrollTop() + $(window).height() >=
+        $(document).height() - 100
+      ) {
+        fetchChatLogs();
+      }
+    });
+  });
+</script>
 
 {% endblock content %}
