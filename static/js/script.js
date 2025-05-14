@@ -1,3 +1,20 @@
+/* ============== lib ============== */
+function createStorage(key, storage = window.localStorage) {
+  function get() {
+    return JSON.parse(storage.getItem(key));
+  }
+
+  function set(value) {
+    storage.setItem(key, JSON.stringify(value));
+  }
+
+  function reset() {
+    storage.removeItem(key);
+  }
+
+  return { get, set, reset };
+}
+
 const endpoints = {
   register: "/api/register",
   checkUsername: "/api/check-username",
@@ -69,14 +86,41 @@ function fetchRegister() {
     });
 }
 
-/* ============== DOM 이벤트 ============== */
+const tokenStorage = createStorage("token");
 
+function fetchLogin() {
+  const username = $("#login-username").val();
+  const password = $("#login-password").val();
+
+  if (!username || !password) {
+    return alert("이메일과 비밀번호를 입력해 주세요.");
+  }
+
+  request
+    .post(endpoints.login, {
+      username,
+      password,
+    })
+    .then(function (response) {
+      tokenStorage.set(response.token);
+      window.location.href = "/";
+    })
+    .catch(function (error) {
+      alert("이메일 또는 비밀번호가 일치하지 않아요.");
+    });
+}
+
+/* ============== DOM 이벤트 ============== */
 function isFocusedTextInput() {
   return $(".text-input").is(":focus");
 }
 
 // 팝업 열기
 function openPopup(popupName) {
+  if (tokenStorage.get()) {
+    return alert("이미 로그인 상태입니다.");
+  }
+
   $(".popup-backdrop").hide();
   $(`.popup-backdrop[data-popup="${popupName}"]`).show();
 }
@@ -84,32 +128,16 @@ function openPopup(popupName) {
 // 팝업 닫기
 function closePopup() {
   $(".popup-backdrop").hide();
+  $(".popup-backdrop").find("input").val("");
+}
+
+// 로그아웃
+function logout() {
+  tokenStorage.reset();
+  window.location.href = "/";
 }
 
 $(document).ready(function () {
-  // 사용자의 타이핑을 유도하는 타이핑 효과
-  const typed = new Typed(".text-input", {
-    strings: [
-      "생각나는 대로, 거침없이.",
-      "머리에 떠오르는 걸 바로 써요.",
-      "주저하지 말고, 툭.",
-      "생각 많을수록, 그냥 쓰는 게 답.",
-      "생각을 포장하지 말고 그대로.",
-      "지금 떠오른 그거, 바로 써요.",
-      "하고 싶은 말, 그대로 던져요.",
-    ],
-    typeSpeed: 50,
-    backSpeed: 50,
-    attr: "placeholder",
-    bindInputFocusEvents: true,
-    fadeOut: false,
-    loop: true,
-  });
-
-  $(".text-input").on("focus", function () {
-    typed.reset();
-  });
-
   // 팝업
   $(".close-button").on("click", function () {
     closePopup();
@@ -259,6 +287,23 @@ $(document).ready(function () {
     e.preventDefault();
     fetchRegister();
   });
+
+  // 로그인 폼 제출
+  $("#login-form").on("submit", function (e) {
+    e.preventDefault();
+    fetchLogin();
+  });
+
+  // 버튼 관리
+  if (tokenStorage.get()) {
+    $(".my-buzz-button").show();
+    $(".logout").show();
+    $(".open-login-popup").hide();
+  } else {
+    $(".my-buzz-button").hide();
+    $(".logout").hide();
+    $(".open-login-popup").show();
+  }
 });
 
 /* ============== 유효성 검사 ============== */

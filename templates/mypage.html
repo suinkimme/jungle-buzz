@@ -1,14 +1,4 @@
-{% extends "base.html" %} {% block content %}
-
-<div class="auth-button-container">
-  <button class="primary-button" onClick="window.location.href='/'">
-    뒤로가기
-  </button>
-  <div class="auth-button-container-right">
-    <button class="primary-button">내 버즈</button>
-    <button class="primary-button">로그아웃</button>
-  </div>
-</div>
+{% extends "base.html" %} {% block content %} {% include "buttons.html" %}
 
 <div class="my-info-container">
   <div class="my-info-wrapper">

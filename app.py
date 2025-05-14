@@ -237,11 +237,11 @@ def send_chat(user):
 
 @app.route('/')
 def index():
-    return render_template('main.html')
+    return render_template('main.html', current_path=request.path)
 
 @app.route('/mypage')
 def mypage():
-    return render_template('mypage.html')
+    return render_template('mypage.html', current_path=request.path)
 
 
 if __name__ == '__main__':

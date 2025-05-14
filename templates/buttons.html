@@ -1,0 +1,30 @@
+<div class="auth-button-container">
+  {% if current_path == '/mypage' %}
+  <button class="primary-button" onClick="window.location.href='/'">
+    뒤로가기
+  </button>
+  {% else %}
+  <span></span>
+  {% endif %}
+  <div class="auth-button-container-right">
+    <button
+      class="primary-button my-buzz-button"
+      onclick="window.location.href='/mypage'"
+    >
+      내 버즈
+    </button>
+    <button
+      class="primary-button logout"
+      style="display: none"
+      onclick="logout()"
+    >
+      로그아웃
+    </button>
+    <button
+      class="primary-button open-login-popup"
+      onclick="openPopup('login')"
+    >
+      로그인
+    </button>
+  </div>
+</div>
