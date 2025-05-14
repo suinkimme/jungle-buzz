@@ -48,11 +48,32 @@ $(document).ready(function () {
   });
 });
 
-// 한글의 특성상 focus 이후에 조합되는 문자를 유추할 수 없다. 현재로써는
-$(".container").on("click keydown", function (e) {
-  const $input = $(".text-input").first();
+var swiper = new Swiper(".swiper", {
+  direction: "vertical",
+  slidesPerView: "auto",
+  spaceBetween: 0,
+  loop: false,
+  allowTouchMove: false,
+  autoHeight: true,
+});
 
-  if (!$input.is(":focus")) {
-    $input.focus();
+$(".text-input").on("keyup", function (e) {
+  if (e.key === "Enter") {
+    const inputText = $(this).val().trim();
+    if (inputText.length === 0) return;
+
+    const newSlide = `<div class="text-slot-item swiper-slide">${inputText}</div>`;
+    swiper.appendSlide(newSlide);
+    swiper.slideNext();
+
+    $(this).val("");
+
+    const maxSlides = 10;
+    // 슬라이드 넘버 유지: removeSlide는 slideNext 애니메이션 끝나고 호출
+    swiper.once("transitionEnd", function () {
+      if (swiper.slides.length > maxSlides) {
+        swiper.removeSlide(0);
+      }
+    });
   }
 });
