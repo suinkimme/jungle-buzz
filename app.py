@@ -337,6 +337,23 @@ def index():
 def mypage():
     return render_template('mypage.html', current_path=request.path)
 
+@app.route('/api/recent-chats', methods=['GET'])
+def get_recent_chats():
+    try:
+        recent_logs = chat_col.find({}).sort('timestamp', -1).limit(20)
+        recent_chats = []
+        for log in reversed(list(recent_logs)):
+            recent_chats.append({
+                'username': log.get('username'),
+                'content': log.get('content'),
+                'timestamp': log.get('timestamp').strftime('%Y-%m-%d %H:%M:%S') if log.get('timestamp') else None
+            })
+        return jsonify({'chats': recent_chats})
+    except Exception as e:
+        return jsonify({'error': '채팅 로딩 실패', 'details': str(e)}), 500
+
+
+
 if __name__ == '__main__':
     t = threading.Thread(target=run_schedule)
     t.daemon = True
