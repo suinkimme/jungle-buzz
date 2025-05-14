@@ -37,7 +37,7 @@ def flush_chat_buffer():
 flush_thread = threading.Thread(target=flush_chat_buffer, daemon=True)
 flush_thread.start()
 
-
+print(1)
 #API: 회원가입
 
 # [요청 방식] POST /api/register
