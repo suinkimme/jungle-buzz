@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 from pymongo import MongoClient
@@ -11,6 +12,8 @@ import openai
 import schedule
 import ast
 import os
+
+load_dotenv()
 
 # Flask 앱 생성
 app = Flask(__name__)
