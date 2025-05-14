@@ -56,6 +56,10 @@
   $(".text-input").on("focus", function () {
     typed.reset();
   });
+
+  $(".text-input").on("blur", function () {
+    typed.start();
+  });
 </script>
 
 {% endblock content %}

@@ -60,6 +60,32 @@ function createClient() {
 
 const request = createClient();
 
+function fetchSendChat() {
+  if (!tokenStorage.get()) {
+    $(".text-input").val("");
+    $(".text-input").blur();
+    openPopup("login");
+    return false;
+  }
+
+  const content = $(".text-input").val();
+
+  if (content.length === 0) {
+    return false;
+  }
+
+  request
+    .post(endpoints.sendChat, {
+      content,
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
 function fetchRegister() {
   const name = $("#register-name").val();
   const username = $("#register-username").val();
@@ -167,6 +193,10 @@ $(document).ready(function () {
     if (e.key === "Enter") {
       const inputText = $(this).val().trim();
       if (inputText.length === 0) return;
+
+      if (!fetchSendChat()) {
+        return;
+      }
 
       const newSlide = `<div class="text-slot-item swiper-slide">${inputText}</div>`;
       swiper.appendSlide(newSlide);
