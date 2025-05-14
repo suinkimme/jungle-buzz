@@ -1,32 +1,11 @@
-{% extends "base.html" %} 
-{% block content %} 
-{% include "login-popup.html" %}
-{% include "register-popup.html" %} 
-{% include "buttons.html" %}
+{% extends "base.html" %} {% block content %} {% include "login-popup.html" %}
+{% include "register-popup.html" %} {% include "buttons.html" %}
 
 <div class="container">
   <div class="text-slot-list swiper">
     <div class="gradient-box"></div>
     <div class="text-slot-item-container swiper-wrapper">
-      <p class="text-slot-item swiper-slide">
-        오늘은 정말 아무것도 하기 싫은 날이다.
-      </p>
-      <p class="text-slot-item swiper-slide">
-        왜 세상은 항상 이렇게 돌아가는 걸까?
-      </p>
-      <p class="text-slot-item swiper-slide">
-        지하철에서 누가 내 발을 밟고도 사과를 안 했어.
-      </p>
-      <p class="text-slot-item swiper-slide">
-        오늘은 정말 아무것도 하기 싫은 날이다.
-      </p>
-      <p class="text-slot-item swiper-slide">
-        왜 세상은 항상 이렇게 돌아가는 걸까?
-      </p>
-      <p class="text-slot-item swiper-slide">
-        지하철에서 누가 내 발을 밟고도 사과를 안 했어.
-      </p>
-      <div class="swiper-slide"></div>
+      <!-- <div class="swiper-slide"></div> -->
     </div>
   </div>
 
@@ -80,37 +59,35 @@
     });
 
     // WebSocket 연결
-    const socket = io("http://172.21.100.183:5002");
+    const socket = io("http://127.0.0.1:5002");
 
-  socket.on("connect", () => {
-  console.log("[SocketIO] 연결됨");
-  socket.emit("join_main", {});
-  
-  window.addEventListener("beforeunload", function (event) {
-  console.log("beforeunload 이벤트 발생됨");
-  if (socket && socket.connected) {
-    socket.emit("leave_main", {});
-    socket.disconnect(); // 웹소켓 연결 해제
-  }
-});
-  
+    socket.on("connect", () => {
+      console.log("[SocketIO] 연결됨");
+      socket.emit("join_main", {});
 
-  request.get("/api/recent-chats")
-    .then(function (response) {
-      response.chats.forEach((chat) => {
-        const newSlide = `<div class="text-slot-item swiper-slide">${chat.content}</div>`;
-        swiper.appendSlide(newSlide);
+      window.addEventListener("beforeunload", function (event) {
+        console.log("beforeunload 이벤트 발생됨");
+        if (socket && socket.connected) {
+          socket.emit("leave_main", {});
+          socket.disconnect(); // 웹소켓 연결 해제
+        }
       });
 
-      swiper.slideTo(swiper.slides.length - 1); // 최신 슬라이드로 이동
-    })
-    .catch(function (error) {
-      console.log("채팅 불러오기 실패", error);
+      request
+        .get("/api/recent-chats")
+        .then(function (response) {
+          response.chats.forEach((chat) => {
+            const newSlide = `<div class="text-slot-item swiper-slide">${chat.content}</div>`;
+            swiper.appendSlide(newSlide);
+          });
+
+          // swiper.slideTo(swiper.slides.length - 1); // 최신 슬라이드로 이동
+        })
+        .catch(function (error) {
+          console.log("채팅 불러오기 실패", error);
+        });
     });
-});
-    
-      
-    
+
     socket.on("system", (data) => {
       console.log("[System]", data.msg);
     });
