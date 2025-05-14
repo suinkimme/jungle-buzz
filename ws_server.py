@@ -26,12 +26,14 @@ def handle_join_main(data):
 
 @socketio.on("send_chat")
 def handle_send_chat(data):
-    # JWT 토큰이 있는 유저만 채팅 전송 가능
+    print("[DEBUG] send_chat data:", data)  # ← 반드시 있어야 함
+
     token = data.get("token")
     content = data.get("content", "").strip()
 
     if not token or not content:
         emit("error", {"msg": "토큰 또는 메시지가 없습니다."}, to=request.sid)
+        print("[DEBUG] 메시지 거부됨: 토큰 or 내용 없음")
         return
 
     try:
@@ -47,8 +49,32 @@ def handle_send_chat(data):
 
     except jwt.ExpiredSignatureError:
         emit("error", {"msg": "토큰 만료"}, to=request.sid)
-    except Exception:
+        print("[DEBUG] 토큰 만료")
+    except Exception as e:
         emit("error", {"msg": "토큰 검증 실패"}, to=request.sid)
+        print("[DEBUG] 토큰 검증 실패:", str(e))
+
+
+@socketio.on("typing")
+def handle_typing(data):
+    token = data.get("token")
+    content = data.get("content", "")
+
+    if not token:
+        return  # 로그인 안 한 사용자 무시
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        username = payload["username"]
+
+        emit("typing_broadcast", {
+            "username": username,
+            "content": content
+        }, to="main")
+
+    except:
+        pass  # 에러 무시 (유효하지 않은 토큰이면 무시)
+
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5002)
