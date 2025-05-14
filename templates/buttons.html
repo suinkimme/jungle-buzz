@@ -4,7 +4,20 @@
     뒤로가기
   </button>
   {% else %}
-  <span></span>
+  <div class="analysis-button-container">
+    <button class="analysis-button">
+      <img
+        src="{{ url_for('static', filename='images/mailbox.png') }}"
+        alt="정글러들에게 따뜻한 한마디"
+      />
+    </button>
+    <span class="red-dot"></span>
+    <div class="analysis-text-container">
+      <div class="analysis-text-content">
+        {{ analysis_logs | replace('\n', '<br />') | safe }}
+      </div>
+    </div>
+  </div>
   {% endif %}
   <div class="auth-button-container-right">
     <button
