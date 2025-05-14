@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .text-thin {
   font-family: "Noto Sans KR", sans-serif;
   font-optical-sizing: auto;
@@ -31,4 +37,400 @@
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
+}
+
+/* container */
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: calc(100vh - 98px);
+}
+
+/* index.html */
+/* slot-chat */
+.text-slot-list {
+  height: 600px;
+  overflow: hidden;
+}
+
+.gradient-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(42, 123, 155, 1) 0%,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(87, 199, 133, 0) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 100;
+}
+
+.text-slot-item-container {
+  /* min-height: 300px; */
+  /* overflow: hidden; */
+}
+.text-slot-item {
+  font-size: 64px;
+  font-weight: 700;
+  opacity: 1;
+  color: #000;
+  text-align: center;
+  transition: all 0.3s;
+  word-break: break-all;
+  padding: 0 30px;
+}
+
+/* .text-slot-item.active {
+  font-size: 64px;
+  font-weight: 700;
+  opacity: 1;
+}
+
+.text-slot-item.yet-active {
+  font-size: 40px;
+  opacity: 0.4;
+} */
+
+/* primary-button */
+.primary-button {
+  height: 38px;
+  line-height: 38px;
+  color: #bbb;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 21px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.primary-button:hover {
+  color: #fff;
+  background-color: #000;
+}
+
+.primary-button:active {
+  background-color: #333;
+}
+
+/* text-container */
+.text-container {
+  width: 100%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 40px;
+  overflow: hidden;
+  padding: 0 50px;
+}
+
+.text-input {
+  width: 100%;
+  font-weight: 800;
+  color: #000;
+  font-size: 40px;
+  border: none;
+  outline: none;
+  text-align: center;
+}
+
+.text-input::placeholder {
+  color: #e8e8e8;
+}
+
+/* auth-button-container */
+.auth-button-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 30px 30px 0 30px;
+}
+
+.auth-button-container-right {
+  display: flex;
+  gap: 15px;
+}
+
+/* popup */
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  backdrop-filter: blur(7px);
+  transition: all 0.3s;
+}
+
+.popup-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 430px;
+  min-height: 300px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 55px;
+  transition: all 0.3s;
+}
+
+.popup-title-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-top: 25px;
+  margin-bottom: 58px;
+}
+
+.popup-title-container h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000;
+}
+
+.popup-title-container p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #666;
+}
+
+.text-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.close-button {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* base-input */
+.base-input {
+  width: 100%;
+  height: 48px;
+  background-color: #eee;
+  border-radius: 6px;
+  padding: 0 16px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  border: none;
+  outline: none;
+}
+
+.base-input::placeholder {
+  color: #bfbfbf;
+}
+
+/* long-button */
+.long-button {
+  width: 100%;
+  height: 48px;
+  background-color: #000;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.long-button:disabled {
+  color: #a0a0a0;
+  background-color: #d7d7d7;
+  cursor: not-allowed;
+}
+
+/* text-button */
+.text-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-button {
+  font-size: 14px;
+  font-weight: 500;
+  color: #999;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 28px;
+}
+
+.register-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.register-helper-text {
+  font-size: 12px;
+  font-weight: 400;
+  color: #000;
+}
+
+.register-helper-text.fail {
+  color: #ff4d4f;
+}
+
+.register-helper-text.success {
+  color: #3182f6;
+}
+
+/* my-info-container */
+.my-info-container {
+  width: 100%;
+  height: 106px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  margin-top: 30px;
+}
+
+.my-info-wrapper {
+  width: 650px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+
+.misc {
+  line-height: 38px;
+  height: 38px;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* my-buzz-container */
+.my-buzz-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 65px;
+}
+
+.my-buzz-list {
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.my-buzz-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.my-buzz-item span {
+  font-size: 12px;
+  font-weight: 400;
+  color: #666;
+}
+
+.my-buzz-item p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+/* analysis-button */
+.analysis-button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.1s;
+  background-color: transparent;
+  position: relative;
+}
+
+.analysis-button-container {
+  position: relative;
+}
+
+.analysis-button img {
+  width: 28px;
+}
+
+.red-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ff4d4f;
+  border-radius: 50%;
+  position: absolute;
+  right: -4px;
+  bottom: 5px;
+}
+
+.analysis-text-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  backdrop-filter: blur(7px);
+  transition: all 0.3s;
+  display: none;
+}
+
+.analysis-text-content {
+  width: 500px;
+  min-height: 50px;
+  max-height: 700px;
+  overflow-y: scroll;
+  background-color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  border-radius: 12px;
+  padding: 15px 20px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
