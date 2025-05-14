@@ -296,6 +296,14 @@
   color: #000;
 }
 
+.register-helper-text.fail {
+  color: #ff4d4f;
+}
+
+.register-helper-text.success {
+  color: #3182f6;
+}
+
 /* my-info-container */
 .my-info-container {
   width: 100%;

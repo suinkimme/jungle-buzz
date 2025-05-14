@@ -82,7 +82,8 @@ def api_register():
 
 @app.route('/api/check-username', methods=['POST'])
 def check_username():
-    username = request.args.get('username')
+    data = request.get_json()
+    username = data.get('username')
 
     if not username:
         return jsonify({'error': 'username 쿼리 파라미터가 필요합니다'}), 400

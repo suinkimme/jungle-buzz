@@ -5,35 +5,54 @@
       <img src="{{ url_for('static', filename='images/close.png') }}" />
     </button>
 
-    <form>
+    <form id="register-form">
       <div class="text-input-container">
-        <input type="text" class="base-input login-email" placeholder="이름" />
+        <input
+          type="text"
+          id="register-name"
+          class="base-input login-email"
+          placeholder="이름"
+        />
         <div class="register-input-container">
           <input
+            id="register-username"
             type="text"
             class="base-input login-email"
             placeholder="이메일"
           />
-          <span class="register-helper-text">이메일을 입력해 주세요.</span>
+          <span class="register-helper-text email"
+            >이메일을 입력해 주세요.</span
+          >
         </div>
-        <input
-          type="password"
-          class="base-input login-password"
-          placeholder="비밀번호"
-        />
+        <div class="register-input-container" style="margin-top: 30px">
+          <input
+            id="register-password"
+            type="password"
+            class="base-input login-password"
+            placeholder="비밀번호"
+          />
+          <span class="register-helper-text password">
+            영문, 숫자 조합이면 더 안전해요.</span
+          >
+        </div>
         <div class="register-input-container">
           <input
+            id="register-password-confirm"
             type="password"
             class="base-input login-password"
             placeholder="비밀번호 확인"
           />
-          <span class="register-helper-text"
-            >영문, 숫자 조합이면 더 안전해요.</span
+          <span class="register-helper-text password-confirm"
+            >비밀번호를 확인해 주세요.</span
           >
         </div>
       </div>
 
-      <button class="long-button" style="margin-top: 28px" disabled>
+      <button
+        class="long-button register-button"
+        style="margin-top: 28px"
+        disabled
+      >
         회원가입
       </button>
     </form>

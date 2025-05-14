@@ -36,6 +36,41 @@ function createClient() {
   };
 }
 
+const request = createClient();
+
+function fetchRegister() {
+  const name = $("#register-name").val();
+  const username = $("#register-username").val();
+  const password = $("#register-password").val();
+  const passwordConfirm = $("#register-password-confirm").val();
+
+  if (
+    !name ||
+    !username ||
+    !password ||
+    !passwordConfirm ||
+    !validatePassword(password) ||
+    !validateEmail(username) ||
+    password !== passwordConfirm
+  ) {
+    return;
+  }
+
+  request
+    .post(endpoints.register, {
+      name: $("#register-name").val(),
+      username: $("#register-username").val(),
+      password: $("#register-password").val(),
+      passwordConfirm: $("#register-password-confirm").val(),
+    })
+    .then(function (response) {
+      closePopup();
+      openPopup("login");
+    });
+}
+
+/* ============== DOM 이벤트 ============== */
+
 function isFocusedTextInput() {
   return $(".text-input").is(":focus");
 }
@@ -75,6 +110,7 @@ $(document).ready(function () {
     typed.reset();
   });
 
+  // 팝업
   $(".close-button").on("click", function () {
     closePopup();
   });
@@ -114,4 +150,144 @@ $(document).ready(function () {
       });
     }
   });
+
+  let debounceTimer;
+  // 회원가입 폼 유효성 검사
+  $("#register-form input").on("keyup", function () {
+    const id = $(this).attr("id");
+    const value = $(this).val();
+    checkFormValidity();
+
+    if (id === "register-username") {
+      if (value.length === 0) {
+        $(".register-helper-text.email").text("이메일을 입력해 주세요.");
+        $(".register-helper-text.email").removeClass("fail");
+        $(".register-helper-text.email").removeClass("success");
+        return;
+      }
+
+      if (!validateEmail(value)) {
+        $(".register-helper-text.email").text(
+          "올바른 이메일 주소를 입력해 주세요."
+        );
+        $(".register-helper-text.email").addClass("fail");
+
+        return;
+      }
+
+      // 이전 타이머가 있다면 취소
+      clearTimeout(debounceTimer);
+
+      // 500ms 후에 API 요청 실행
+      debounceTimer = setTimeout(() => {
+        request
+          .post(endpoints.checkUsername, {
+            username: value,
+          })
+          .then(function () {
+            $(".register-helper-text.email").text("좋아요, 사용할 수 있어요!");
+            $(".register-helper-text.email").addClass("success");
+          })
+          .catch(function () {
+            $(".register-helper-text.email").text(
+              "이미 사용 중인 이메일이에요."
+            );
+            $(".register-helper-text.email").addClass("fail");
+            $(".register-helper-text.email").removeClass("success");
+          });
+      }, 500);
+
+      return;
+    }
+
+    if (id === "register-password") {
+      if (value.length === 0) {
+        $(".register-helper-text.password").text("비밀번호를 입력해 주세요.");
+        $(".register-helper-text.password").removeClass("fail");
+        $(".register-helper-text.password").removeClass("success");
+        return;
+      }
+
+      if (!validatePassword(value)) {
+        $(".register-helper-text.password").text(
+          "영문, 숫자 조합으로 입력해 주세요."
+        );
+        $(".register-helper-text.password").addClass("fail");
+        $(".register-helper-text.password").removeClass("success");
+
+        return;
+      }
+
+      $(".register-helper-text.password").removeClass("fail");
+      $(".register-helper-text.password").addClass("success");
+      $(".register-helper-text.password").text("좋아요, 사용할 수 있어요!");
+
+      return;
+    }
+
+    if (id === "register-password-confirm") {
+      if (value.length === 0) {
+        $(".register-helper-text.password-confirm").text(
+          "비밀번호를 확인해 주세요."
+        );
+        $(".register-helper-text.password-confirm").removeClass("fail");
+        $(".register-helper-text.password-confirm").removeClass("success");
+        return;
+      }
+
+      if (value !== $("#register-password").val()) {
+        $(".register-helper-text.password-confirm").text(
+          "비밀번호가 일치하지 않아요."
+        );
+        $(".register-helper-text.password-confirm").addClass("fail");
+        $(".register-helper-text.password-confirm").removeClass("success");
+        return;
+      }
+
+      $(".register-helper-text.password-confirm").removeClass("fail");
+      $(".register-helper-text.password-confirm").addClass("success");
+      $(".register-helper-text.password-confirm").text(
+        "좋아요, 비밀번호가 일치해요!"
+      );
+
+      return;
+    }
+  });
+
+  // 회원가입 폼 제출
+  $("#register-form").on("submit", function (e) {
+    e.preventDefault();
+    fetchRegister();
+  });
 });
+
+/* ============== 유효성 검사 ============== */
+
+function checkFormValidity() {
+  const $name = $("#register-name");
+  const $username = $("#register-username");
+  const $password = $("#register-password");
+  const $passwordConfirm = $("#register-password-confirm");
+
+  if (
+    $name.val().length > 0 &&
+    $username.val().length > 0 &&
+    $password.val().length > 0 &&
+    $passwordConfirm.val().length > 0 &&
+    $password.val() === $passwordConfirm.val()
+  ) {
+    $(".register-button").attr("disabled", false);
+  } else {
+    $(".register-button").attr("disabled", true);
+  }
+}
+
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function validatePassword(password) {
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).+$/;
+  return passwordRegex.test(password);
+}
