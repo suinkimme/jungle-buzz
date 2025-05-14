@@ -1,3 +1,41 @@
+const endpoints = {
+  register: "/api/register",
+  checkUsername: "/api/check-username",
+  login: "/api/login",
+  profile: "/api/profile",
+  chatLogs: "/api/chat-logs",
+  sendChat: "/api/send-chat",
+};
+
+function createClient() {
+  function request(method, endpoint, data, options = {}) {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: endpoint,
+        method,
+        contentType: "application/json",
+        data:
+          method === "GET" || method === "DELETE" ? data : JSON.stringify(data),
+        success(response) {
+          resolve(response);
+        },
+        error(_, status, error) {
+          reject(new Error(`API Error [${status}] ${error}`));
+        },
+      });
+    });
+  }
+
+  return {
+    get(endpoint, params = {}, options = {}) {
+      return request("GET", endpoint, params, options);
+    },
+    post(endpoint, body = {}, options = {}) {
+      return request("POST", endpoint, body, options);
+    },
+  };
+}
+
 function isFocusedTextInput() {
   return $(".text-input").is(":focus");
 }
