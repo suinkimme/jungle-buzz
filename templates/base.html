@@ -21,16 +21,23 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/common.css') }}"
     />
+
+    
     <title>303호 1팀 정글버즈</title>
   </head>
-  <body class="text-regular">
+    <body class="text-regular">
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!--Socket.IO 클라이언트 라이브러리 추가 -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
     {% block content %} {% endblock content %}
   </body>
 </html>

@@ -1,5 +1,8 @@
-{% extends "base.html" %} {% block content %} {% include "login-popup.html" %}
-{% include "register-popup.html" %} {% include "buttons.html" %}
+{% extends "base.html" %} 
+{% block content %} 
+{% include "login-popup.html" %}
+{% include "register-popup.html" %} 
+{% include "buttons.html" %}
 
 <div class="container">
   <div class="text-slot-list swiper">
@@ -33,32 +36,109 @@
 </div>
 
 <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
 <script>
-  // 사용자의 타이핑을 유도하는 타이핑 효과
-  const typed = new Typed(".text-input", {
-    strings: [
-      "생각나는 대로, 거침없이.",
-      "머리에 떠오르는 걸 바로 써요.",
-      "주저하지 말고, 툭.",
-      "생각 많을수록, 그냥 쓰는 게 답.",
-      "생각을 포장하지 말고 그대로.",
-      "지금 떠오른 그거, 바로 써요.",
-      "하고 싶은 말, 그대로 던져요.",
-    ],
-    typeSpeed: 50,
-    backSpeed: 50,
-    attr: "placeholder",
-    bindInputFocusEvents: true,
-    fadeOut: false,
-    loop: true,
-  });
+  let swiper; // 전역 선언
+  const tokenRaw = localStorage.getItem("token");
+  const token = tokenRaw ? JSON.parse(tokenRaw) : null;
 
-  $(".text-input").on("focus", function () {
-    typed.reset();
-  });
+  $(document).ready(function () {
+    // 타이핑 효과
+    const typed = new Typed(".text-input", {
+      strings: [
+        "생각나는 대로, 거침없이.",
+        "머리에 떠오르는 걸 바로 써요.",
+        "주저하지 말고, 툭.",
+        "생각 많을수록, 그냥 쓰는 게 답.",
+        "생각을 포장하지 말고 그대로.",
+        "지금 떠오른 그거, 바로 써요.",
+        "하고 싶은 말, 그대로 던져요.",
+      ],
+      typeSpeed: 50,
+      backSpeed: 50,
+      attr: "placeholder",
+      bindInputFocusEvents: true,
+      fadeOut: false,
+      loop: true,
+    });
 
-  $(".text-input").on("blur", function () {
-    typed.start();
+    $(".text-input").on("focus", function () {
+      typed.reset();
+    });
+
+    $(".text-input").on("blur", function () {
+      typed.start();
+    });
+
+    // Swiper 초기화
+    swiper = new Swiper(".swiper", {
+      direction: "vertical",
+      slidesPerView: "auto",
+      loop: false,
+      allowTouchMove: false,
+      autoHeight: true,
+    });
+
+    // WebSocket 연결
+    const socket = io("http://172.21.101.177:5002");
+
+  socket.on("connect", () => {
+  console.log("[SocketIO] 연결됨");
+  socket.emit("join_main", {});
+
+
+  request.get("/api/recent-chats")
+    .then(function (response) {
+      response.chats.forEach((chat) => {
+        const newSlide = `<div class="text-slot-item swiper-slide">${chat.content}</div>`;
+        swiper.appendSlide(newSlide);
+      });
+
+      swiper.slideTo(swiper.slides.length - 1); // 최신 슬라이드로 이동
+    })
+    .catch(function (error) {
+      console.log("채팅 불러오기 실패", error);
+    });
+});
+    
+      
+    
+    socket.on("system", (data) => {
+      console.log("[System]", data.msg);
+    });
+
+    // 채팅 메시지 수신 시 표시
+    socket.on("new_chat", (data) => {
+      const newSlide = `<div class="text-slot-item swiper-slide">${data.content}</div>`;
+      swiper.appendSlide(newSlide);
+      swiper.slideNext();
+
+      if (swiper.slides.length > 10) {
+        swiper.once("transitionEnd", () => {
+          swiper.removeSlide(0);
+        });
+      }
+    });
+
+    // 메시지 전송
+    $(".text-input").on("keyup", function (e) {
+      if (e.key === "Enter") {
+        const inputText = $(this).val().trim();
+        if (inputText.length === 0) return;
+
+        if (!token) {
+          openPopup("login");
+          return;
+        }
+
+        socket.emit("send_chat", {
+          token,
+          content: inputText,
+        });
+
+        $(this).val("");
+      }
+    });
   });
 </script>
 
