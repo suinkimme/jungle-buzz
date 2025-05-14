@@ -52,28 +52,42 @@
 /* index.html */
 /* slot-chat */
 .text-slot-list {
-  height: 300px;
+  height: 600px;
   overflow: hidden;
-  position: relative;
+}
+
+.gradient-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(42, 123, 155, 1) 0%,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(87, 199, 133, 0) 50%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  z-index: 100;
 }
 
 .text-slot-item-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  /* min-height: 300px; */
+  /* overflow: hidden; */
 }
-
 .text-slot-item {
-  line-height: 100px;
-  height: 100px;
-  font-size: 32px;
-  opacity: 0.2;
+  font-size: 64px;
+  font-weight: 700;
+  opacity: 1;
   color: #000;
   text-align: center;
+  transition: all 0.3s;
+  word-break: break-all;
+  padding: 0 30px;
 }
 
-.text-slot-item.active {
+/* .text-slot-item.active {
   font-size: 64px;
   font-weight: 700;
   opacity: 1;
@@ -82,7 +96,7 @@
 .text-slot-item.yet-active {
   font-size: 40px;
   opacity: 0.4;
-}
+} */
 
 /* primary-button */
 .primary-button {
@@ -280,6 +294,14 @@
   font-size: 12px;
   font-weight: 400;
   color: #000;
+}
+
+.register-helper-text.fail {
+  color: #ff4d4f;
+}
+
+.register-helper-text.success {
+  color: #3182f6;
 }
 
 /* my-info-container */

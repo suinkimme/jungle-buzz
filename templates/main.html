@@ -1,25 +1,29 @@
 {% extends "base.html" %} {% block content %} {% include "login-popup.html" %}
-{% include "register-popup.html" %}
-
-<div class="auth-button-container">
-  <span></span>
-  <div class="auth-button-container-right">
-    <button class="primary-button" style="display: none">내 버즈</button>
-    <button class="primary-button" onclick="openPopup('login')">로그인</button>
-  </div>
-</div>
+{% include "register-popup.html" %} {% include "buttons.html" %}
 
 <div class="container">
-  <div class="text-slot-list">
-    <div class="text-slot-item-container">
-      <p class="text-slot-item yet-active">
+  <div class="text-slot-list swiper">
+    <div class="gradient-box"></div>
+    <div class="text-slot-item-container swiper-wrapper">
+      <p class="text-slot-item swiper-slide">
         오늘은 정말 아무것도 하기 싫은 날이다.
       </p>
-      <p class="text-slot-item active">왜 세상은 항상 이렇게 돌아가는 걸까?</p>
-      <p class="text-slot-item yet-active">
+      <p class="text-slot-item swiper-slide">
+        왜 세상은 항상 이렇게 돌아가는 걸까?
+      </p>
+      <p class="text-slot-item swiper-slide">
         지하철에서 누가 내 발을 밟고도 사과를 안 했어.
       </p>
-      <p class="text-slot-item">지금 나만 집에 가고싶은거니</p>
+      <p class="text-slot-item swiper-slide">
+        오늘은 정말 아무것도 하기 싫은 날이다.
+      </p>
+      <p class="text-slot-item swiper-slide">
+        왜 세상은 항상 이렇게 돌아가는 걸까?
+      </p>
+      <p class="text-slot-item swiper-slide">
+        지하철에서 누가 내 발을 밟고도 사과를 안 했어.
+      </p>
+      <div class="swiper-slide"></div>
     </div>
   </div>
 
@@ -27,5 +31,35 @@
     <input type="text" class="text-input" />
   </div>
 </div>
+
+<script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script>
+  // 사용자의 타이핑을 유도하는 타이핑 효과
+  const typed = new Typed(".text-input", {
+    strings: [
+      "생각나는 대로, 거침없이.",
+      "머리에 떠오르는 걸 바로 써요.",
+      "주저하지 말고, 툭.",
+      "생각 많을수록, 그냥 쓰는 게 답.",
+      "생각을 포장하지 말고 그대로.",
+      "지금 떠오른 그거, 바로 써요.",
+      "하고 싶은 말, 그대로 던져요.",
+    ],
+    typeSpeed: 50,
+    backSpeed: 50,
+    attr: "placeholder",
+    bindInputFocusEvents: true,
+    fadeOut: false,
+    loop: true,
+  });
+
+  $(".text-input").on("focus", function () {
+    typed.reset();
+  });
+
+  $(".text-input").on("blur", function () {
+    typed.start();
+  });
+</script>
 
 {% endblock content %}
