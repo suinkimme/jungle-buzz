@@ -83,6 +83,8 @@
   color: #000;
   text-align: center;
   transition: all 0.3s;
+  word-break: break-all;
+  padding: 0 30px;
 }
 
 /* .text-slot-item.active {
