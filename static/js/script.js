@@ -82,12 +82,8 @@ function fetchSendChat() {
       console.log(response);
     })
     .catch(function (error) {
-      alert("채팅 전송에 실패했어요. 로그인 상태를 확인해 주세요.");
-      logout();
-      openPopup("login");
+      console.log(error);
     });
-
-  return true;
 }
 
 function fetchRegister() {
@@ -164,7 +160,6 @@ function openPopup(popupName) {
 function closePopup() {
   $(".popup-backdrop").hide();
   $(".popup-backdrop").find("input").val("");
-  $(".analysis-text-container").hide();
 }
 
 // 로그아웃
@@ -184,30 +179,6 @@ $(document).ready(function () {
       closePopup();
     }
   });
-
-  $(".analysis-text-container").on("click", function (e) {
-    if (e.target === this) {
-      $(".analysis-text-container").hide();
-    }
-  });
-
-  const analysisReadStorage = createStorage("analysisRead");
-
-  $(".analysis-button").on("click", function () {
-    $(".analysis-text-container").show();
-    $(".red-dot").hide();
-
-    analysisReadStorage.set(new Date().toISOString().split("T")[0]);
-  });
-
-  const analysisReadDate = analysisReadStorage.get();
-
-  if (analysisReadDate) {
-    const today = new Date().toISOString().split("T")[0];
-    if (analysisReadDate === today) {
-      $(".red-dot").hide();
-    }
-  }
 
   var swiper = new Swiper(".swiper", {
     direction: "vertical",

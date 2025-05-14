@@ -6,11 +6,7 @@ from datetime import datetime, timedelta
 import jwt
 import threading
 import time
-from utils.auth import token_required, SECRET_KEY
-import openai
-import schedule
-import ast
-import os
+from utils.auth import token_required, SECRET_KEY  
 
 # Flask 앱 생성
 app = Flask(__name__)
@@ -21,15 +17,12 @@ client = MongoClient('mongodb://localhost:27017/')
 db = client['your_db_name']
 article_col = db['article']
 chat_col = db['chat']
-analysis_col = db['analysis']
 
 #버퍼 설정 및 Flush 쓰레드
 chat_buffer = []
 buffer_lock = threading.Lock()
 MAX_BUFFER_SIZE = 10
 FLUSH_INTERVAL = 2  # 초
-
-openaiClient = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def flush_chat_buffer():
     global chat_buffer
@@ -38,95 +31,11 @@ def flush_chat_buffer():
         with buffer_lock:
             if chat_buffer:
                 chat_col.insert_many(chat_buffer)
-                # print(f"[Flush] {len(chat_buffer)} chat logs inserted")
+                print(f"[Flush] {len(chat_buffer)} chat logs inserted")
                 chat_buffer.clear()
 
 flush_thread = threading.Thread(target=flush_chat_buffer, daemon=True)
 flush_thread.start()
-
-# 채팅 가져오기
-def get_recent_chat_logs(ms):
-    now = datetime.utcnow()
-    delta = timedelta(milliseconds=ms)
-    cutoff_time = now - delta
-
-    chat_logs = chat_col.find(
-        {'timestamp': {'$gte': cutoff_time}},
-        {'_id': 0, 'username': 0}
-    ).sort('timestamp', -1)
-
-    return list(chat_logs)
-
-# 채팅 분석
-def format_chat_logs_markdown(chat_logs):
-    # 테이블 헤더
-    table_lines = [
-        "| 작성일 | 버즈 내용 |",
-        "| --- | --- |"
-    ]
-    
-    for log in chat_logs:
-        timestamp = log.get('timestamp')
-        content = log.get('content', '')
-        
-        if timestamp:
-            timestamp_str = timestamp.strftime('%Y-%m-%d %H:%M:%S')
-        else:
-            timestamp_str = 'Unknown Time'
-        
-        # 마크다운 테이블 형식으로 추가
-        line = f"| {timestamp_str} | {content} |"
-        table_lines.append(line)
-    
-    # 줄바꿈으로 이어붙이기
-    return '\n'.join(table_lines)
-
-def analyze_chat():
-    query = (
-        "당신은 섬세하고 따뜻한 조언자입니다. "
-        "이제부터 제공된 데이터를 기반으로 참가자들의 심리 상태를 부드럽게 읽어내고, "
-        "편지를 쓰듯 자연스럽고 진심 어린 문장으로 답변을 작성해야 합니다. "
-        "결과물은 분석 리포트처럼 딱딱해서는 안 되고, "
-        "편안한 말투로 길게 써 내려가야 하며, 친근하고 신뢰를 줄 수 있어야 합니다."
-        "또한 정글러들이 작성한 버즈를 직접적으로 언급하지마"
-    )
-
-    chat_logs = get_recent_chat_logs(1000 * 60 * 60 * 24)
-    formatted_logs = format_chat_logs_markdown(chat_logs)
-
-    if len(chat_logs) == 0:
-        print("분석할 채팅 로그가 없습니다.")
-        analysis_col.insert_one({
-            'timestamp': datetime.utcnow(),
-            'content': '버즈가 하나도 없어요. ✨ 아마 모두 오늘은 걱정 없이 행복하게 보내고 있나 봐요! :)'
-        })
-        return None
-
-    response = openaiClient.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {"role": "system", "content": "당신은 데이터 분석가입니다. 제공된 데이터를 기반으로 사용자의 심리와 관심사를 분석해야 합니다."},
-            {"role": "user", "content": f"{query}\n\n{formatted_logs}"}
-        ],
-        temperature=0.3,
-        max_tokens=2000
-    )
-
-    # print(response.choices[0].message.content)
-    analysis_col.insert_one({
-        'timestamp': datetime.utcnow(),
-        'content': response.choices[0].message.content
-    })
-    
-
-# 채팅 분석 스케줄러
-schedule.every().day.at("09:50").do(analyze_chat)
-# schedule.every(10).seconds.do(analyze_chat)
-
-def run_schedule():
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
 
 
 #API: 회원가입
@@ -328,10 +237,7 @@ def send_chat(user):
 
 @app.route('/')
 def index():
-    # 가장 최근 분석 결과 가져오기
-    analysis_logs = list(analysis_col.find().sort('timestamp', -1).limit(1))[0]
-    content = ast.literal_eval(f"'''{analysis_logs['content']}'''")
-    return render_template('main.html', current_path=request.path, analysis_logs=content)
+    return render_template('main.html', current_path=request.path)
 
 @app.route('/mypage')
 def mypage():
@@ -355,8 +261,4 @@ def get_recent_chats():
 
 
 if __name__ == '__main__':
-    t = threading.Thread(target=run_schedule)
-    t.daemon = True
-    t.start()
-
     app.run('0.0.0.0', port=5001, debug=True)

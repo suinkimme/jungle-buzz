@@ -1,10 +1,9 @@
 from functools import wraps
 from flask import request, jsonify
 import jwt
-import os
 
 # 나중에 app.py에서 이 값을 import 해야 함
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = 'your-secret-key'
 
 def token_required(f):
     @wraps(f)
