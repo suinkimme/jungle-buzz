@@ -400,6 +400,3 @@ function validatePassword(password) {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d).+$/;
   return passwordRegex.test(password);
 }
-
-/* ============== 페이지 종료 때 이벤트로 세션션 종료 함수 ============== */
-window.addEventListener("beforeunload", function (event) {});

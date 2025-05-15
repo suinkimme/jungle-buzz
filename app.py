@@ -22,7 +22,7 @@ CORS(app)
 # MongoDB 연결
 client = MongoClient('mongodb://jmlee:jmlee@127.0.0.1', 27017)
 # client = MongoClient('localhost', 27017)
-db = client['your_db_name']
+db = client['Jungle_buzz']
 article_col = db['article']
 chat_col = db['chat']
 analysis_col = db['analysis']
