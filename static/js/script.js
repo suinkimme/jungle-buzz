@@ -84,7 +84,6 @@ function fetchSendChat() {
     .catch(function (error) {
       alert("채팅 전송에 실패했어요. 로그인 상태를 확인해 주세요.");
       logout();
-      openPopup("login");
     });
 
   return true;
